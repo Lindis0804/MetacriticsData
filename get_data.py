@@ -11,6 +11,12 @@ from pymongo import MongoClient
 from const import *
 from selenium.webdriver.chrome.options import Options
 
+from producer import MovieProducer
+
+broker = 'localhost:9092'
+topic = 'test'
+producer = MovieProducer(broker,topic)
+
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
 client = MongoClient('localhost', 27017)
@@ -163,7 +169,8 @@ def get_data(i, serial):
                 'rating': rating,
                 'runtime': runtime
             }
-            collection.insert_one(record)
+            # collection.insert_one(record)
+            producer.send_msg(record)
             file = open("data.csv","w")
             file.write(str({"film_serial":film_serial,"page":page}))
             file.close()
