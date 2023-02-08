@@ -21,8 +21,7 @@ class MovieProducer:
             future = self.producer.send(self.topic,msg)
             self.producer.flush()
             future.get(timeout=60)
-            # print("message sent successfully...")
-            print(msg)
+            # print(msg)
         except Exception as ex:
             return ex
 
@@ -32,6 +31,13 @@ class MovieProducer:
         data = json.load(f)
         for i in data:
             self.send_msg(i)
+        print("message sent successfully...")
+
+# run producer
+broker = 'localhost:9092'
+topic = 'film'
+producer = MovieProducer(broker, topic)
+producer.bootstrap()
 
 
 

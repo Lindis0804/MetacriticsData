@@ -1,0 +1,6 @@
+hdfs
+elasticsearch
+beautifulsoup4
+kafka-python
+
+python-dotenv

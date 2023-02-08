@@ -31,7 +31,7 @@ def sum_arr(arr):
     return res
 
 
-def printt(rec, loop, stop=False):
+def print(rec, loop, stop=False):
     print(rec)
     if (stop):
         loop.stop()
