@@ -9,3 +9,5 @@ schedule
 pymongo
 webdriver_manager
 selenium
+
+pandas
