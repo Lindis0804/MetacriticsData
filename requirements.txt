@@ -4,3 +4,8 @@ beautifulsoup4
 kafka-python
 
 python-dotenv
+schedule
+
+pymongo
+webdriver_manager
+selenium

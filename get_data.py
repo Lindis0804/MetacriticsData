@@ -1,4 +1,5 @@
 from time import sleep
+import schedule
 
 import selenium.common.exceptions
 import urllib3.exceptions
@@ -14,7 +15,7 @@ from selenium.webdriver.chrome.options import Options
 from producer import MovieProducer
 
 broker = 'localhost:9092'
-topic = 'test'
+topic = 'film'
 producer = MovieProducer(broker,topic)
 
 chrome_options = Options()
@@ -22,20 +23,6 @@ chrome_options.add_experimental_option("detach", True)
 client = MongoClient('localhost', 27017)
 database = client['admin']
 collection = database['films']
-
-
-def sum_arr(arr):
-    res = ''
-    for ar in arr:
-        res = ar + ","
-    return res
-
-
-def print(rec, loop, stop=False):
-    print(rec)
-    if (stop):
-        loop.stop()
-
 
 def get_data(i, serial):
     # assign values to page and film_serial for continue crawling when programme has errors
@@ -193,14 +180,24 @@ def get_data(i, serial):
 
 
 # open link
-filmObj = eval(open("data.csv","r").readline())
-film_serial = filmObj["film_serial"]
-page = filmObj["page"]
-if (film_serial == 99):
-    page += 1
-    film_serial = 0
-else:
-    film_serial +=1
-get_data(page, film_serial)
-for i in range(page+1, 152):
-    get_data(i, 0)
+def run():
+    print('[*] Start running producer to get data')
+    filmObj = eval(open("data.csv","r").readline())
+    film_serial = filmObj["film_serial"]
+    page = filmObj["page"]
+    if (film_serial == 99):
+        page += 1
+        film_serial = 0
+    else:
+        film_serial +=1
+    get_data(page, film_serial)
+    for i in range(page+1, 152):
+        get_data(i, 0)
+
+# schedule producer
+# schedule.every(1).minutes.do(run)
+# while True:
+#     schedule.run_pending()
+#     sleep(1)
+
+run()
